@@ -1,0 +1,67 @@
+schema_version: "0.1"
+
+suite:
+  id: incident-triage
+  version: "0.1.0"
+  description: >
+    Deterministic smoke-test benchmark using a fictional
+    operational incident severity policy.
+
+tasks:
+  - id: checkout-total-outage
+
+    prompt: |
+      Classify this incident and return JSON.
+
+      The production checkout database is unreachable.
+      All customer purchases are failing.
+
+    graders:
+      - type: json_equals
+        path: severity
+        expected: P0
+        weight: 1.0
+
+  - id: checkout-partial-impact
+
+    prompt: |
+      Classify this incident and return JSON.
+
+      About half of checkout attempts fail.
+      Other customers can still complete purchases.
+
+    graders:
+      - type: json_equals
+        path: severity
+        expected: P1
+        weight: 1.0
+
+  - id: workaround-available
+
+    prompt: |
+      Classify this incident and return JSON.
+
+      Customers cannot export reports using the normal
+      button, but they can still download the same reports
+      from the reports page.
+
+    graders:
+      - type: json_equals
+        path: severity
+        expected: P2
+        weight: 1.0
+
+  - id: internal-dashboard-delay
+
+    prompt: |
+      Classify this incident and return JSON.
+
+      An internal analytics dashboard is refreshing
+      20 minutes late. Customer-facing systems are
+      unaffected.
+
+    graders:
+      - type: json_equals
+        path: severity
+        expected: P3
+        weight: 1.0
